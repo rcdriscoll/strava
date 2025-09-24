@@ -26,35 +26,57 @@ async function performAuthentication() {
     window.location.href = authUrl;
   }
 }
+
+function metersToMiles(meters) {
+  return (meters * 0.000621371).toFixed(2);
+}
+
+function metersToFeet(meters) {
+  return (meters * 3.28084).toFixed(2);
+}
+
+function formatMovingTime(seconds) {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${hrs}h ${mins}m ${secs}s`;
+}
+
 </script>
 
 <main>
-  <h1>Subpar Strava Stats</h1>
+  <h1>Tour de Nerd™</h1>
   {#if stats}
     <div>
       <h2>Biking</h2>
-      {#if stats.all_ride_totals.distance === 0}
+      {#if stats.all_ride_totals.count === 0}
         <p>Biking Sucks Doesnt It?</p>
       {:else}
-        <p>Total Distance: {stats.all_ride_totals.distance} km</p>
-        <p>Total Elevation Gain: {stats.all_ride_totals.elevation_gain} m</p>
-      {/if} 
+        <p><strong>Ride Count:</strong> {stats.all_ride_totals.count}</p>
+        <p><strong>Total Distance:</strong> {metersToMiles(stats.all_ride_totals.distance)} mi</p>
+        <p><strong>Total Elevation Gain:</strong> {metersToFeet(stats.all_ride_totals.elevation_gain)} ft</p>
+        <p><strong>Total Moving Time:</strong> {formatMovingTime(stats.all_ride_totals.moving_time)}</p>
+      {/if}
     </div>
     <div>
       <h2>Running</h2>
-      {#if stats.all_run_totals.distance === 0}
+      {#if stats.all_run_totals.count === 0}
         <p>Running Sucks Doesnt It?</p>
       {:else}
-        <p>Total Distance: {stats.all_run_totals.distance} km</p>
-        <p>Total Elevation Gain: {stats.all_run_totals.elevation_gain} m</p>
+        <p><strong>Run Count:</strong> {stats.all_run_totals.count}</p>
+        <p><strong>Total Distance:</strong> {metersToMiles(stats.all_run_totals.distance)} mi</p>
+        <p><strong>Total Elevation Gain:</strong> {metersToFeet(stats.all_run_totals.elevation_gain)} ft</p>
+        <p><strong>Total Moving Time:</strong> {formatMovingTime(stats.all_run_totals.moving_time)}</p>
       {/if}
     </div>
     <div>
       <h2>Swimming</h2>
-      {#if stats.all_swim_totals.distance === 0}
+      {#if stats.all_swim_totals.count === 0}
         <p>Swimming Sucks Doesnt It?</p>
       {:else}
-        <p>Total Distance: {stats.all_swim_totals.distance} km</p>
+        <p><strong>Swim Count:</strong> {stats.all_swim_totals.count}</p>
+        <p><strong>Total Distance:</strong> {stats.all_swim_totals.distance} meters</p>
+        <p><strong>Total Moving Time:</strong> {formatMovingTime(stats.all_swim_totals.moving_time)}</p>
       {/if}
     </div>
   {:else}
